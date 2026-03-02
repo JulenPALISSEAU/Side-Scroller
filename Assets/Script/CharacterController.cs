@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CharacterController : MonoBehaviour
 {
@@ -15,35 +16,56 @@ public class CharacterController : MonoBehaviour
     public LayerMask GroundLayer;
     public LayerMask HoleLayer;
     Vector2 LastSafeSpot;
-    bool touchingPlatformSide;
+
+    InputSystemActions PlayerInputActions;
+    InputAction Move;
+    InputAction Jump;
 
     void Awake() {
+        // Récupère le RigideBody de l'élèment pour l'utiliser plus tard plus facilement
         Rigidbody = GetComponent<Rigidbody2D>();
+
+        PlayerInputActions = new InputSystemActions();
     }
 
-    void Update() {
-        //bool (Collider2D Hole);
-        //public bool IsTouchingLayers(int layerMask = Physics2D.AllLayers);
+    private void OnEnable()
+    {
+        Move = PlayerInputActions.Player.Move;
+        Move.Enable();
+        Debug.Log(Move);
 
+        Jump = PlayerInputActions.Player.Jump;
+        Jump.Enable();
+        Debug.Log(Jump);
+    }
+
+    void Update()
+    {
+        // Récupère l'input du joueur pour le déplacement
         VectorInput = Input.GetAxisRaw("Horizontal");
-        bool isGrounded = Physics2D.Raycast(transform.position, Vector2.down, 0.6f, GroundLayer);
-        if (isGrounded)
+
+        // Vérifie avec 2 Raycasts sur les bords inférieurs droite et gauche du personnage joueur si celui-ci touche le sol
+        Vector2 RaycastGroundedLeft = new Vector2(transform.position.x - 0.5f, transform.position.y - 0.5f);
+        Vector2 RaycastGroundedRight = new Vector2(transform.position.x + 0.5f, transform.position.y - 0.5f);
+        bool isGroundedLeft = Physics2D.Raycast(RaycastGroundedLeft, Vector2.down, 0.1f, GroundLayer);
+        bool isGroundedRight = Physics2D.Raycast(RaycastGroundedRight, Vector2.down, 0.1f, GroundLayer);
+        
+        // Définie le dernier emplacement "safe" sur lequel le joueur était et la sauvegarde
+        if (isGroundedLeft || isGroundedRight)
         {
             LastSafeSpot = transform.position;
         }
         
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        // Effectue le saut du personnage joueur si la touche et presser et si l'un des Raycasts qui vérifie si le joueur touche le sol et positif
+        if (Input.GetButtonDown("Jump") && (isGroundedLeft || isGroundedRight))
         {
             Rigidbody.linearVelocity = new Vector2(Rigidbody.linearVelocity.x, jumpForce);
         }
 
-        bool touchingPlatformSide = Physics2D.Raycast(transform.position.x - 0.5f, Vector2.left, 0.6f, GroundLayer);
-        bool touchingPlatformSide = Physics2D.Raycast(position, Vector2.left, 0.6f, GroundLayer);
-        bool touchingPlatformSide = Physics2D.Raycast(position, Vector2.right, 0.6f, GroundLayer);
-        bool touchingPlatformSide = Physics2D.Raycast(position, Vector2.right, 0.6f, GroundLayer);
-
-
+        // Vérifie et sauvegarde si le personnage joueur est rentrer en contact avec l'élèment qui sert de vide
         bool haveFallen = this.GetComponent<Collider2D>().IsTouchingLayers(HoleLayer);
+
+        // Repositionne le joueur à son dernier emplacement sécuriser s'il est tombé dans le vide
         if (haveFallen)
         {
             transform.position = LastSafeSpot;
@@ -51,6 +73,8 @@ public class CharacterController : MonoBehaviour
     }
 
     private void FixedUpdate() {
+
+        //
         var v = Rigidbody.linearVelocity;
         v.x = VectorInput * moveSpeed;
 
