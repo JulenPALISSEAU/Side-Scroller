@@ -6,8 +6,11 @@ public class UICombatSystemController : MonoBehaviour
 
         private Camera MainCamera;
 
-        // Start is called before the first frame update
-        void Start()
+        public int OffsetX;
+        public int OffsetY;
+
+    // Start is called before the first frame update
+    void Start()
         {
             MainCamera = Camera.main;
         }
@@ -17,6 +20,7 @@ public class UICombatSystemController : MonoBehaviour
         {
             var screenPos = MainCamera.WorldToScreenPoint(Follow.position);
 
-            transform.position = screenPos;
+        //transform.position = new Vector3(screenPos.x, screenPos.y + 150, screenPos.z);
+        transform.position = new Vector3(screenPos.x + OffsetX, screenPos.y + OffsetY, 0);
     }
 }

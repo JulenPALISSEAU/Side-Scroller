@@ -17,6 +17,11 @@ public class PlayerController : MonoBehaviour
     public LayerMask HoleLayer;
     Vector2 LastSafeSpot;
 
+    bool isKO;
+    bool isFighting;
+    int deathCount;
+    int spamKeyMeter;
+
     InputSystemActions PlayerInputActions;
     InputAction Move;
     InputAction Jump;
@@ -26,6 +31,12 @@ public class PlayerController : MonoBehaviour
         Rigidbody = GetComponent<Rigidbody2D>();
 
         PlayerInputActions = new InputSystemActions();
+
+        // Instancie les valeurs de bases
+        isKO = false;
+        isFighting = false;
+        deathCount = 0;
+        spamKeyMeter = 0;
     }
 
     private void OnEnable()
@@ -51,13 +62,13 @@ public class PlayerController : MonoBehaviour
         bool isGroundedRight = Physics2D.Raycast(RaycastGroundedRight, Vector2.down, 0.1f, GroundLayer);
         
         // Définie le dernier emplacement "safe" sur lequel le joueur était et la sauvegarde
-        if (isGroundedLeft || isGroundedRight)
+        if (isGroundedLeft && isGroundedRight)
         {
             LastSafeSpot = transform.position;
         }
         
         // Effectue le saut du personnage joueur si la touche et presser et si l'un des Raycasts qui vérifie si le joueur touche le sol et positif
-        if (Input.GetButtonDown("Jump") && (isGroundedLeft || isGroundedRight))
+        if (Input.GetButtonDown("Jump") && (isGroundedLeft || isGroundedRight) && spamKeyMeter <= 0)
         {
             Rigidbody.linearVelocity = new Vector2(Rigidbody.linearVelocity.x, jumpForce);
         }
@@ -65,10 +76,27 @@ public class PlayerController : MonoBehaviour
         // Vérifie et sauvegarde si le personnage joueur est rentrer en contact avec l'élèment qui sert de vide
         bool haveFallen = this.GetComponent<Collider2D>().IsTouchingLayers(HoleLayer);
 
-        // Repositionne le joueur à son dernier emplacement sécuriser s'il est tombé dans le vide
+        // Repositionne le joueur à son dernier emplacement sécuriser s'il est tombé dans le vide avant de le mettre KO
         if (haveFallen)
         {
             transform.position = LastSafeSpot;
+            isKO = true;
+        }
+
+        // Retire l'état de KO du personnage, rajoute 1 mort au compteur et ajouter a des points dans le "spamKeyMeter"
+        if (isKO)
+        {
+            deathCount++;
+            spamKeyMeter = deathCount * 5;
+            isKO = false;
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.gameObject.tag == "DeathWall")
+        {
+            Debug.Log("Patate");
         }
     }
 
@@ -76,7 +104,9 @@ public class PlayerController : MonoBehaviour
 
         //
         var v = Rigidbody.linearVelocity;
-        v.x = VectorInput * moveSpeed;
+        if (spamKeyMeter <= 0 && Input.GetKeyDown(KeyCode.Space)) spamKeyMeter--;
+
+        if (spamKeyMeter <= 0) v.x = VectorInput * moveSpeed;
 
         Rigidbody.linearVelocity = v;
     }

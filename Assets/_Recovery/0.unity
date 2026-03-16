@@ -687,6 +687,7 @@ GameObject:
   - component: {fileID: 603015660}
   - component: {fileID: 603015662}
   - component: {fileID: 603015661}
+  - component: {fileID: 603015663}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -701,7 +702,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 603015659}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -710,8 +711,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -612, y: -322.5}
-  m_SizeDelta: {x: 8, y: 4}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 500, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &603015661
 MonoBehaviour:
@@ -751,6 +752,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 603015659}
   m_CullTransparentMesh: 1
+--- !u!114 &603015663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 603015659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 766197a1a1a89cf47ab498b612f7f1af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UICombatSystemController
+  Follow: {fileID: 1880465752}
+  OffsetX: 300
+  OffsetY: 250
 --- !u!1 &828390330
 GameObject:
   m_ObjectHideFlags: 0
@@ -765,7 +781,7 @@ GameObject:
   - component: {fileID: 828390334}
   m_Layer: 0
   m_Name: DeathSide
-  m_TagString: Untagged
+  m_TagString: DeathWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1599,7 +1615,7 @@ GameObject:
   - component: {fileID: 1515142132}
   - component: {fileID: 1515142131}
   - component: {fileID: 1515142130}
-  - component: {fileID: 1515142129}
+  - component: {fileID: 1515142134}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1607,19 +1623,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1515142129
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1515142128}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 766197a1a1a89cf47ab498b612f7f1af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UICombatSystemController
-  Follow: {fileID: 1880465752}
 --- !u!114 &1515142130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1703,6 +1706,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1515142134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1515142128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 766197a1a1a89cf47ab498b612f7f1af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UICombatSystemController
+  Follow: {fileID: 1880465752}
+  OffsetX: 0
+  OffsetY: 0
 --- !u!1 &1644236173
 GameObject:
   m_ObjectHideFlags: 0
