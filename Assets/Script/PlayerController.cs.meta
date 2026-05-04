@@ -1,2 +1,15 @@
 fileFormatVersion: 2
-guid: ccc1cc46d638c444bab941f7fd538ff3
+guid: 5f86fb97dbbcb004a87ba1c3f39e55aa
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - rbPlayer: {instanceID: 0}
+  - move: {instanceID: 0}
+  - jump: {instanceID: 0}
+  - test: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

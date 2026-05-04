@@ -1,97 +1,90 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Move variables")]
-    [SerializeField] float moveSpeed = 5f;
-    [SerializeField] float acceleration = 20f;
+    [Header("Player Modifier")]
+    public Rigidbody2D rbPlayer;
 
-    [Header("Gravity / Jump")]
-    [SerializeField] float gravity = -10f;
-    [SerializeField] float jumpForce = 5f;
+    [Header("Player Stats")]
+    float speed = 4.5f;
+    float jumpForce = 5.5f;
+    bool isBlocked = false;
+    int deathCount = 0;
+    int spamKeyMeter = 0;
 
-    Rigidbody2D Rigidbody;
-    float VectorInput;
+    [Header("CheckerGrounded")]
+    bool isGroundedLeft;
+    bool isGroundedRight;
+
+    public Vector2 moveInput;
+    public Vector2 LastSafeSpot;
+    public InputActionReference move;
+    public InputActionReference jump;
     public LayerMask GroundLayer;
     public LayerMask HoleLayer;
-    Vector2 LastSafeSpot;
 
-    bool isKO;
-    bool isFighting;
-    int deathCount;
-    int spamKeyMeter;
+    public InputActionReference test;
 
-    InputSystemActions PlayerInputActions;
-    InputAction Move;
-    InputAction Jump;
+    void Test(InputAction.CallbackContext obj)
+    {
+        // Bloque le joueur, augmente le compteur de mort du joueur et détermine le nombre de fois le joueur dois presser la touche de saut pour ce débloquer
+        isBlocked = true;
+        deathCount++;
+        spamKeyMeter += deathCount * 5;
+    }
+        
+    void Jump(InputAction.CallbackContext obj)
+    {
+        // Vérifie si le joueur est bloquer puis effectue saute
+        if (!isBlocked && (isGroundedLeft || isGroundedRight)) {
+            rbPlayer.linearVelocity = new Vector2(rbPlayer.linearVelocity.x, jumpForce);
+        }
+        // Sinon vérifie si le joueur a suffisamment taper la touche de saut pour se débloquer. Si c'est le cas il est débloquer, sinon le compteur diminue de 1
+        else {
+            if (spamKeyMeter <= 1)
+            {
+                spamKeyMeter = 0;
+                isBlocked = false;
+            }
+            else
+            {
+                spamKeyMeter--;
+            }
+        }
+    }
 
-    void Awake() {
-        // Récupère le RigideBody de l'élèment pour l'utiliser plus tard plus facilement
-        Rigidbody = GetComponent<Rigidbody2D>();
+    IEnumerator playerDeath()
+    {
+        // Bloque le joueur, augmente son compteur de mort, défini le nombre de fois le joueur doit spam une touche pour ce libérer
+        isBlocked = true;
+        deathCount++;
+        spamKeyMeter += deathCount * 5;
 
-        PlayerInputActions = new InputSystemActions();
+        // Repositionne le joueur à son dernier emplacement safe est retire l'état qui indique qu'il est tombé
+        transform.position = LastSafeSpot;
+        bool haveFallen = false;
 
-        // Instancie les valeurs de bases
-        isKO = false;
-        isFighting = false;
-        deathCount = 0;
-        spamKeyMeter = 0;
+        // Attends une demi seconde pour éviter de compter plusieurs morts
+        yield return new WaitForSeconds(0.5f);
     }
 
     private void OnEnable()
     {
-        Move = PlayerInputActions.Player.Move;
-        Move.Enable();
-        Debug.Log(Move);
+        test.action.started += Test;
 
-        Jump = PlayerInputActions.Player.Jump;
-        Jump.Enable();
-        Debug.Log(Jump);
+        jump.action.started += Jump;
     }
 
-    void Update()
+    private void OnDisable()
     {
-        // Récupère l'input du joueur pour le déplacement
-        VectorInput = Input.GetAxisRaw("Horizontal");
+        test.action.started -= Test;
 
-        // Vérifie avec 2 Raycasts sur les bords inférieurs droite et gauche du personnage joueur si celui-ci touche le sol
-        Vector2 RaycastGroundedLeft = new Vector2(transform.position.x - 0.5f, transform.position.y - 0.5f);
-        Vector2 RaycastGroundedRight = new Vector2(transform.position.x + 0.5f, transform.position.y - 0.5f);
-        bool isGroundedLeft = Physics2D.Raycast(RaycastGroundedLeft, Vector2.down, 0.1f, GroundLayer);
-        bool isGroundedRight = Physics2D.Raycast(RaycastGroundedRight, Vector2.down, 0.1f, GroundLayer);
-        
-        // Définie le dernier emplacement "safe" sur lequel le joueur était et la sauvegarde
-        if (isGroundedLeft && isGroundedRight)
-        {
-            LastSafeSpot = transform.position;
-        }
-        
-        // Effectue le saut du personnage joueur si la touche et presser et si l'un des Raycasts qui vérifie si le joueur touche le sol et positif
-        if (Input.GetButtonDown("Jump") && (isGroundedLeft || isGroundedRight) && spamKeyMeter <= 0)
-        {
-            Rigidbody.linearVelocity = new Vector2(Rigidbody.linearVelocity.x, jumpForce);
-        }
-
-        // Vérifie et sauvegarde si le personnage joueur est rentrer en contact avec l'élèment qui sert de vide
-        bool haveFallen = this.GetComponent<Collider2D>().IsTouchingLayers(HoleLayer);
-
-        // Repositionne le joueur à son dernier emplacement sécuriser s'il est tombé dans le vide avant de le mettre KO
-        if (haveFallen)
-        {
-            transform.position = LastSafeSpot;
-            isKO = true;
-        }
-
-        // Retire l'état de KO du personnage, rajoute 1 mort au compteur et ajouter a des points dans le "spamKeyMeter"
-        if (isKO)
-        {
-            deathCount++;
-            spamKeyMeter = deathCount * 5;
-            isKO = false;
-        }
+        jump.action.started -= Jump;
     }
 
+    // Vérifie si le joueur à touché le bord gauche de l'écran et ---
     void OnCollisionEnter2D(Collision2D col)
     {
         if (col.gameObject.tag == "DeathWall")
@@ -100,66 +93,35 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void FixedUpdate() {
+    void Update() {
+        // Sauvegarde la pression des touches/du joystick pour se déplacer dans un Vector2
+        moveInput = move.action.ReadValue<Vector2>();
 
-        //
-        var v = Rigidbody.linearVelocity;
-        if (spamKeyMeter <= 0 && Input.GetKeyDown(KeyCode.Space)) spamKeyMeter--;
 
-        if (spamKeyMeter <= 0) v.x = VectorInput * moveSpeed;
 
-        Rigidbody.linearVelocity = v;
+        // Vérifie avec 2 Raycasts sur les bords inférieurs droite et gauche du personnage joueur si celui-ci touche le sol
+        Vector2 RaycastGroundedLeft = new Vector2(transform.position.x - 0.5f, transform.position.y - 0.5f);
+        Vector2 RaycastGroundedRight = new Vector2(transform.position.x + 0.5f, transform.position.y - 0.5f);
+        isGroundedLeft = Physics2D.Raycast(RaycastGroundedLeft, Vector2.down, 0.1f, GroundLayer);
+        isGroundedRight = Physics2D.Raycast(RaycastGroundedRight, Vector2.down, 0.1f, GroundLayer);
+
+        // Définie le dernier emplacement "safe" sur lequel le joueur était et la sauvegarde
+        if (isGroundedLeft && isGroundedRight)
+        {
+            LastSafeSpot = transform.position;
+        }
+
+        // Vérifie et sauvegarde si le personnage joueur est rentrer en contact avec l'élèment qui sert de vide
+        bool haveFallen = this.GetComponent<Collider2D>().IsTouchingLayers(HoleLayer);
+
+        // Vérifie si le joueur est tombé et si celui-ci est n'est pas bloqué. Si c'est le cas, le joueur est repositioné à son dernier emplacement sécuriser s'il est tombé dans le vide avant de le mettre KO
+        if (haveFallen) if (!isBlocked) StartCoroutine(playerDeath());
+    }
+
+    void FixedUpdate() {
+        // Si le joueur n'est pas bloquer, il est 
+        if (!isBlocked) {
+            rbPlayer.linearVelocity = new Vector2(moveInput.x * speed, rbPlayer.linearVelocityY);
+        }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//V1 - Legacy Controls
-
-//public class CharacterController : MonoBehaviour
-//{
-//    [Header("Move variables")]
-//    [SerializeField] float moveSpeed = 5f;
-//    [SerializeField] float acceleration = 20f;
-
-////    [Header("Gravity / Jump")]
-////    [SerializeField] float gravity = -10f;
-////    [SerializeField] float jumpHeight = 1.5f;
-
-////   Rigidbody2D Rigidbody;
-//    Vector2 input;
-
-//    void Awake()
-//    {
-//        Rigidbody = GetComponent<Rigidbody2D>();
-//    }
-
-//    void Update()
-//    {
-//        input = new Vector2();
-//        input.Normalize();
-//    }
-
-//    private void FixedUpdate()
-//{
-//    Rigidbody.linearVelocity = input * moveSpeed;
-//}
-//}
-
-
-
-
-//V2 - Legacy Controls
