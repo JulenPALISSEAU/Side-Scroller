@@ -84,15 +84,6 @@ public class PlayerController : MonoBehaviour
         jump.action.started -= Jump;
     }
 
-    // Vérifie si le joueur à touché le bord gauche de l'écran et ---
-    void OnCollisionEnter2D(Collision2D col)
-    {
-        if (col.gameObject.tag == "DeathWall")
-        {
-            Debug.Log("Patate");
-        }
-    }
-
     void Update() {
         // Sauvegarde la pression des touches/du joystick pour se déplacer dans un Vector2
         moveInput = move.action.ReadValue<Vector2>();

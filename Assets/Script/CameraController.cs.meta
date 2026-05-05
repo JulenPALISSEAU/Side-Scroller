@@ -1,2 +1,13 @@
 fileFormatVersion: 2
 guid: 2b2c8b79d8478ea42b15284019834084
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - CameraHub: {fileID: 9130850412762780740, guid: cb63ea606aac6b249a9a3193bef3686a, type: 3}
+  - target: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -269,6 +269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b2c8b79d8478ea42b15284019834084, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
+  CameraHub: {fileID: 0}
   target: {fileID: 594059493}
   SmoothTime: 0
   offset: {x: 10.25, y: 0, z: -5}
@@ -285,6 +286,7 @@ GameObject:
   - component: {fileID: 594059494}
   - component: {fileID: 594059496}
   - component: {fileID: 594059495}
+  - component: {fileID: 594059497}
   m_Layer: 0
   m_Name: DeathWall
   m_TagString: DeathWall
@@ -424,6 +426,18 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &594059497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 594059492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 326f8582b955bea4899368a9505fa8ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SwitchSceneController
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0

@@ -138,13 +138,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   rbPlayer: {fileID: 4665501232906942748}
-  speed: 3
-  isBlocked: 0
-  deathCount: 0
-  spamKeyMeter: 0
   moveInput: {x: 0, y: 0}
+  LastSafeSpot: {x: 0, y: 0}
   move: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   jump: {fileID: -2099379676528639254, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  GroundLayer:
+    serializedVersion: 2
+    m_Bits: 4096
+  HoleLayer:
+    serializedVersion: 2
+    m_Bits: 2048
   test: {fileID: 2205652112209333969, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
 --- !u!50 &4665501232906942748
 Rigidbody2D:
