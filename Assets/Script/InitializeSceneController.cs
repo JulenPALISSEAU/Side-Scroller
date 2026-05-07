@@ -5,6 +5,10 @@ public class InitializeSceneController : MonoBehaviour
 {
     int sceneID;
 
+    public GameObject Chara;
+    public GameObject CameraHub;
+    public GameObject TitleMenuUI;
+
     void Awake()
     {
         // Récupère l'ID de la scene actuellement chargé
@@ -30,16 +34,21 @@ public class InitializeSceneController : MonoBehaviour
                 // Si le joueur a perdu
                 if ((PlayerPrefs.GetInt("playerLose")) == 1) {
 
+                    Instantiate(Chara);
+                    Instantiate(CameraHub);
+
                     PlayerPrefs.SetInt("playerLose", 0);
                     PlayerPrefs.Save();
                 }
                 else {
-
+                    Instantiate(CameraHub);
+                    Instantiate(TitleMenuUI);
                 }
                 break;
 
             // Initialisation de la scene "level"
             case 1:
+                Instantiate(Chara);
                 break;
         }
 

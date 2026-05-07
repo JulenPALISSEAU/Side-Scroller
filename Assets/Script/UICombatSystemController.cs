@@ -1,26 +1,61 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UICombatSystemController : MonoBehaviour
 {
-    public Transform Follow;
+    public PlayerController Chara;
 
-        private Camera MainCamera;
+    [Header("Menu UI")]
+    public GameObject MenuCombatUI;
+    public GameObject MagieUI;
 
-        public int OffsetX;
-        public int OffsetY;
+    [Header("Boutons")]
+    public Button attackButton;
+    public Button magicButton;
+    public Button magicAButton;
+    public Button magicBButton;
+    public Button magicCButton;
+    public Button magicDButton;
+    public Button magicEButton;
 
-    // Start is called before the first frame update
-    void Start()
-        {
-            MainCamera = Camera.main;
-        }
+    // -------Attaque & Magie----------
+    public void Attack(){
+        MenuCombatUI.SetActive(false);
+        Chara.isFighting = false;
+    }
 
-        // Update is called once per frame
-        void Update()
-        {
-            var screenPos = MainCamera.WorldToScreenPoint(Follow.position);
+    public void Magic()
+    {
+        MagieUI.SetActive(true);
+        magicAButton.Select();
+    }
 
-        //transform.position = new Vector3(screenPos.x, screenPos.y + 150, screenPos.z);
-        transform.position = new Vector3(screenPos.x + OffsetX, screenPos.y + OffsetY, 0);
+    // -------Attaques Magiques----------
+    public void MagicA()
+    {
+        MagieUI.SetActive(false);
+        attackButton.Select();
+    }
+    public void MagicB()
+    {
+        MagieUI.SetActive(false);
+        attackButton.Select();
+    }
+    public void MagicC()
+    {
+        MagieUI.SetActive(false);
+        attackButton.Select();
+    }
+    public void MagicD()
+    {
+        MagieUI.SetActive(false);
+        attackButton.Select();
+    }
+    public void MagicE()
+    {
+        MagieUI.SetActive(false);
+        attackButton.Select();
     }
 }

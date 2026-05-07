@@ -7,8 +7,6 @@ public class CameraController : MonoBehaviour
     int sceneID;
     bool checkerGameLaunchOnce;
 
-    public GameObject CameraHub;
-
     // Camera Hub
 
     // Camera Level
@@ -36,7 +34,6 @@ public class CameraController : MonoBehaviour
         {
             // Camera pour la scene "Hub"
             case 0:
-                Instantiate(CameraHub);
                 if (!checkerGameLaunchOnce || (PlayerPrefs.GetInt("playerLose")) == 0) {
 
                 }

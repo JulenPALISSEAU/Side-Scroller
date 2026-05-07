@@ -1,6 +1,7 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Collections;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class PlayerController : MonoBehaviour
     float speed = 4.5f;
     float jumpForce = 5.5f;
     bool isBlocked = false;
+    public bool isFighting = false;
+    public bool isPaused = false;
     int deathCount = 0;
     int spamKeyMeter = 0;
 
@@ -18,27 +21,37 @@ public class PlayerController : MonoBehaviour
     bool isGroundedLeft;
     bool isGroundedRight;
 
+    [Header("")]
     public Vector2 moveInput;
     public Vector2 LastSafeSpot;
     public InputActionReference move;
     public InputActionReference jump;
+    public InputActionReference pause;
     public LayerMask GroundLayer;
     public LayerMask HoleLayer;
+
+    [Header("UI Elements")]
+    public GameObject MenuCombatUI;
+    public Button AttackButton;
+    public Button MagicAButton;
 
     public InputActionReference test;
 
     void Test(InputAction.CallbackContext obj)
     {
-        // Bloque le joueur, augmente le compteur de mort du joueur et détermine le nombre de fois le joueur dois presser la touche de saut pour ce débloquer
-        isBlocked = true;
-        deathCount++;
-        spamKeyMeter += deathCount * 5;
+        //PAUSE
+        
+
+        // Bloque le personnage joueur et active l'interface de combat
+        //isFighting = true;
+        //MenuCombatUI.SetActive(true);
+        //AttackButton.Select();
     }
         
     void Jump(InputAction.CallbackContext obj)
     {
-        // Vérifie si le joueur est bloquer puis effectue saute
-        if (!isBlocked && (isGroundedLeft || isGroundedRight)) {
+        // Vérifie si le joueur n'est pas bloquer ou en combat puis effectue saute
+        if (!isBlocked && !isFighting && (isGroundedLeft || isGroundedRight)) {
             rbPlayer.linearVelocity = new Vector2(rbPlayer.linearVelocity.x, jumpForce);
         }
         // Sinon vérifie si le joueur a suffisamment taper la touche de saut pour se débloquer. Si c'est le cas il est débloquer, sinon le compteur diminue de 1
@@ -52,6 +65,30 @@ public class PlayerController : MonoBehaviour
             {
                 spamKeyMeter--;
             }
+        }
+    }
+
+    void Pause(InputAction.CallbackContext obj)
+    {
+        // Met le jeu en pause
+        if (!isPaused)
+        {
+            isPaused = true;
+            while (Time.timeScale <= 0f)
+            {
+                Time.timeScale -= 0.1f;
+            }
+            AudioListener.pause = true;
+        }
+        // Retire la pause
+        else
+        {
+            isPaused = true;
+            while (Time.timeScale >= 1f)
+            {
+                Time.timeScale += 0.1f;
+            }
+            AudioListener.pause = false;
         }
     }
 
@@ -75,6 +112,7 @@ public class PlayerController : MonoBehaviour
         test.action.started += Test;
 
         jump.action.started += Jump;
+        pause.action.started += Pause;
     }
 
     private void OnDisable()
@@ -82,6 +120,7 @@ public class PlayerController : MonoBehaviour
         test.action.started -= Test;
 
         jump.action.started -= Jump;
+        pause.action.started -= Pause;
     }
 
     void Update() {
@@ -111,8 +150,12 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate() {
         // Si le joueur n'est pas bloquer, il est 
-        if (!isBlocked) {
+        if (!isBlocked && !isFighting) {
             rbPlayer.linearVelocity = new Vector2(moveInput.x * speed, rbPlayer.linearVelocityY);
+        }
+        else
+        {
+            rbPlayer.linearVelocity = new Vector2(0, rbPlayer.linearVelocityY);
         }
     }
 }
