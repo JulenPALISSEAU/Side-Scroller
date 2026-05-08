@@ -35,17 +35,24 @@ public class PlayerController : MonoBehaviour
     public Button AttackButton;
     public Button MagicAButton;
 
+    public GameObject PauseMenuUI;
+    public Button ResumeButton;
+    
+
     public InputActionReference test;
 
     void Test(InputAction.CallbackContext obj)
     {
-        //PAUSE
+        //
         
 
         // Bloque le personnage joueur et active l'interface de combat
-        //isFighting = true;
-        //MenuCombatUI.SetActive(true);
-        //AttackButton.Select();
+        if (!isPaused)
+        {
+            isFighting = true;
+            MenuCombatUI.SetActive(true);
+            AttackButton.Select();
+        }
     }
         
     void Jump(InputAction.CallbackContext obj)
@@ -73,22 +80,46 @@ public class PlayerController : MonoBehaviour
         // Met le jeu en pause
         if (!isPaused)
         {
+            Time.timeScale = 0;
             isPaused = true;
-            while (Time.timeScale <= 0f)
-            {
-                Time.timeScale -= 0.1f;
-            }
-            AudioListener.pause = true;
+            PauseMenuUI.SetActive(true);
+            ResumeButton.Select();
+
+
+
+            // ATTEMPT TO MAKE A SLOWDOWN THE GAME BEFORE PAUSING IT INSTEAD OF BEING INSTANT
+            //for (int i = 1; Time.timeScale <= 0f; i++)
+            //{
+            //    Time.timeScale -= 0.1f;
+            //    if (Time.timeScale <= 0f)
+            //    {
+            //        Time.timeScale = 0f;
+            //    }
+            //}
+            //isPaused = true;
+            //AudioListener.pause = true;
+            //Debug.Log(isPaused + " " + Time.timeScale);
         }
         // Retire la pause
         else
         {
-            isPaused = true;
-            while (Time.timeScale >= 1f)
-            {
-                Time.timeScale += 0.1f;
-            }
-            AudioListener.pause = false;
+            Time.timeScale = 1;
+            isPaused = false;
+            PauseMenuUI.SetActive(false);
+
+
+
+            // ATTEMPT TO MAKE A SLOWDOWN THE GAME BEFORE PAUSING IT INSTEAD OF BEING INSTANT
+            //for (int i = 1; Time.timeScale >= 1; i++)
+            //{
+            //  Time.timeScale += 0.1f;
+            //}
+            //if (Time.timeScale >= 1)
+            //{
+            //  Time.timeScale = 1;
+            //  isPaused = false;
+            //  AudioListener.pause = false;
+            //}
         }
     }
 

@@ -44,5 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8f13e27ed0d9a84d975277e65a06b44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InitializeSceneController
-  Chara: {fileID: 172646391850066016, guid: ffd97b8dfa4650d4ab2d3180ca856804, type: 3}
-  CameraHub: {fileID: 8610719942478513275, guid: d114c2b510fef3f4c950a5225f80492d, type: 3}
+  Chara: {fileID: 4275166449280002953, guid: b176f6c02ff79bb45bb19b2b2e8d0b59, type: 3}
+  CameraHub: {fileID: 8610719942478513275, guid: ceaa9538f5f36fb4d9f6341197756df3, type: 3}
+  TitleMenuUI: {fileID: 3785053078935423057, guid: 2f3a31599628c6f499ed9a7f37192a62, type: 3}
