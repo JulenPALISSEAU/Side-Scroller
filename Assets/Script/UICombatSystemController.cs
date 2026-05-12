@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,10 @@ public class UICombatSystemController : MonoBehaviour
     public GameObject MenuCombatUI;
     public GameObject MagieUI;
 
+    [Header("HP & MP Stats")]
+    public TextMeshProUGUI HealthCount;
+    public TextMeshProUGUI MagicCount;
+
     [Header("Boutons")]
     public Button attackButton;
     public Button magicButton;
@@ -17,6 +22,12 @@ public class UICombatSystemController : MonoBehaviour
     public Button magicCButton;
     public Button magicDButton;
     public Button magicEButton;
+
+    private void Update()
+    {
+        HealthCount.text = Chara.currentPlayerHP + "<br>  /<br>   " + Chara.maxPlayerHP;
+        MagicCount.text = Chara.currentPlayerMP + "<br>  /<br>   " + Chara.maxPlayerMP;
+    }
 
     // -------Attaque & Magie----------
     public void Attack(){

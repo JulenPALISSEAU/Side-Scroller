@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Multiplayer.PlayMode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -16,6 +17,11 @@ public class PlayerController : MonoBehaviour
     public bool isPaused = false;
     int deathCount = 0;
     int spamKeyMeter = 0;
+    int necessaryEXP;
+    public int maxPlayerHP;
+    public int currentPlayerHP;
+    public int maxPlayerMP;
+    public int currentPlayerMP;
 
     [Header("CheckerGrounded")]
     bool isGroundedLeft;
@@ -123,6 +129,81 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void InitializeCombatStats()
+    {
+        switch (PlayerPrefs.GetInt("playerLevel"))
+        {
+            case 1:
+                necessaryEXP = 2;
+                maxPlayerHP = 3;
+                currentPlayerHP = maxPlayerHP;
+                maxPlayerMP = 1;
+                currentPlayerMP = maxPlayerMP;
+                break;
+            case 2:
+                necessaryEXP = 5;
+                maxPlayerHP = 4;
+                currentPlayerHP = maxPlayerHP;
+                maxPlayerMP = 2;
+                currentPlayerMP = maxPlayerMP;
+                break;
+            case 3:
+                necessaryEXP = 8;
+                maxPlayerHP = 5;
+                currentPlayerHP = maxPlayerHP;
+                maxPlayerMP = 3;
+                currentPlayerMP = maxPlayerMP;
+                break;
+            case 4:
+                necessaryEXP = 15;
+                maxPlayerHP = 7;
+                currentPlayerHP = maxPlayerHP;
+                maxPlayerMP = 4;
+                currentPlayerMP = maxPlayerMP;
+                break;
+            default:
+                necessaryEXP = 99999999;
+                maxPlayerHP = 10;
+                currentPlayerHP = maxPlayerHP;
+                maxPlayerMP = 5;
+                currentPlayerMP = maxPlayerMP;
+                break;
+        }
+    }
+
+    public void InitializeCombatStart()
+    {
+
+        // OSKOUR
+
+        Debug.Log("FightBegin");
+        Vector2 currentPosition = transform.position;
+        if (moveInput.x < 0)
+        {
+            transform.position = new Vector2(currentPosition.x + 3f, currentPosition.y);
+            Debug.Log("IsMoved");
+        }
+        else
+        {
+            transform.position = new Vector2(currentPosition.x - 3f, currentPosition.y);
+        }
+        isFighting = true;
+        MenuCombatUI.SetActive(true);
+        AttackButton.Select();
+    }
+
+    void EndCombat()
+    {
+        if (PlayerPrefs.GetInt("currentEXP") >= necessaryEXP)
+        {
+            PlayerPrefs.SetInt("playerLevel", (PlayerPrefs.GetInt("playerLevel") + 1));
+        }
+        else
+        {
+            PlayerPrefs.SetInt("currentEXP", (PlayerPrefs.GetInt("currentEXP") + 1));
+        }
+    }
+
     IEnumerator playerDeath()
     {
         // Bloque le joueur, augmente son compteur de mort, défini le nombre de fois le joueur doit spam une touche pour ce libérer
@@ -152,6 +233,10 @@ public class PlayerController : MonoBehaviour
 
         jump.action.started -= Jump;
         pause.action.started -= Pause;
+    }
+
+    void Awake() {
+        InitializeCombatStats();
     }
 
     void Update() {

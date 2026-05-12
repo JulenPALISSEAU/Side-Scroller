@@ -10,7 +10,7 @@ public class UIMenu : MonoBehaviour
 
     public void Play()
     {
-        Instantiate(Chara);
+        Instantiate(Chara, new Vector2(-3.6f, -0.95f), Quaternion.Euler(0f, 0f, 0f));
         Destroy(TitleMenuUI);
     }
 

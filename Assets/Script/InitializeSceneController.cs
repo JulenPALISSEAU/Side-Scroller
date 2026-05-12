@@ -23,6 +23,9 @@ public class InitializeSceneController : MonoBehaviour
             PlayerPrefs.SetInt("wherePlayer", sceneID);         // Pour savoir où est/était le joueur
             PlayerPrefs.SetInt("playerWon", 0);                 // Pour savoir si le joueur à perdu ou non
             PlayerPrefs.SetInt("playerLose", 0);                // Pour savoir si le joueur à gagné ou non
+
+            PlayerPrefs.SetInt("playerLevel", 1);               // Pour conserver le niveau du joueur
+            PlayerPrefs.SetInt("currentEXP", 0);                // Pour conserver la quantité d'EXP obtenu par le joueur
             PlayerPrefs.Save();
         }
     }
@@ -33,7 +36,6 @@ public class InitializeSceneController : MonoBehaviour
             case 0:
                 // Si le joueur a perdu
                 if ((PlayerPrefs.GetInt("playerLose")) == 1) {
-
                     Instantiate(Chara);
                     Instantiate(CameraHub);
 

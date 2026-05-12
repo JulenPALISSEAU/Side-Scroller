@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 1283512166531163238}
   - component: {fileID: 4228789916285063715}
   - component: {fileID: 8922027744683682750}
+  - component: {fileID: 944496285729116916}
   m_Layer: 5
   m_Name: ResumeButton
   m_TagString: Untagged
@@ -130,7 +131,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 6349575296302346244}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 3
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.050980393, g: 1, b: 1, a: 1}
@@ -167,6 +168,28 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!95 &944496285729116916
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1590379487458950834}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f0eb94a84c4e7db44a14c75623b1d083, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2585025889227238274
 GameObject:
   m_ObjectHideFlags: 0
@@ -1203,7 +1226,7 @@ Transform:
   m_GameObject: {fileID: 4275166449280002953}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.3779, y: -0.96142, z: 0}
+  m_LocalPosition: {x: -65.1221, y: -0.96142, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1314,8 +1337,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   rbPlayer: {fileID: 5316726882598871384}
-  isFighting: 0
+  isFighting: 1
   isPaused: 0
+  maxPlayerHP: 0
+  currentPlayerHP: 0
+  maxPlayerMP: 0
+  currentPlayerMP: 0
   moveInput: {x: 0, y: 0}
   LastSafeSpot: {x: 0, y: 0}
   move: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
@@ -2418,7 +2445,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2463691129768377807
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2520,6 +2547,8 @@ MonoBehaviour:
   Chara: {fileID: 3427137186852867441}
   MenuCombatUI: {fileID: 6799933370431804525}
   MagieUI: {fileID: 6395307842989276608}
+  HealthCount: {fileID: 3610087501358063848}
+  MagicCount: {fileID: 9017284500527687732}
   attackButton: {fileID: 5730070017500506675}
   magicButton: {fileID: 8103921565719051235}
   magicAButton: {fileID: 611010829929942879}
