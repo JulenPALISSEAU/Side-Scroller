@@ -25,6 +25,7 @@ public class UICombatSystemController : MonoBehaviour
 
     private void Update()
     {
+        // Dans l'interface de combat, fourni les informations correctes sur les HP et MP du joueur
         HealthCount.text = Chara.currentPlayerHP + "<br>  /<br>   " + Chara.maxPlayerHP;
         MagicCount.text = Chara.currentPlayerMP + "<br>  /<br>   " + Chara.maxPlayerMP;
     }

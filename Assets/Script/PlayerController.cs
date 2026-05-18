@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.Multiplayer.PlayMode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -49,9 +48,6 @@ public class PlayerController : MonoBehaviour
 
     void Test(InputAction.CallbackContext obj)
     {
-        //
-        
-
         // Bloque le personnage joueur et active l'interface de combat
         if (!isPaused)
         {
@@ -90,21 +86,6 @@ public class PlayerController : MonoBehaviour
             isPaused = true;
             PauseMenuUI.SetActive(true);
             ResumeButton.Select();
-
-
-
-            // ATTEMPT TO MAKE A SLOWDOWN THE GAME BEFORE PAUSING IT INSTEAD OF BEING INSTANT
-            //for (int i = 1; Time.timeScale <= 0f; i++)
-            //{
-            //    Time.timeScale -= 0.1f;
-            //    if (Time.timeScale <= 0f)
-            //    {
-            //        Time.timeScale = 0f;
-            //    }
-            //}
-            //isPaused = true;
-            //AudioListener.pause = true;
-            //Debug.Log(isPaused + " " + Time.timeScale);
         }
         // Retire la pause
         else
@@ -112,25 +93,12 @@ public class PlayerController : MonoBehaviour
             Time.timeScale = 1;
             isPaused = false;
             PauseMenuUI.SetActive(false);
-
-
-
-            // ATTEMPT TO MAKE A SLOWDOWN THE GAME BEFORE PAUSING IT INSTEAD OF BEING INSTANT
-            //for (int i = 1; Time.timeScale >= 1; i++)
-            //{
-            //  Time.timeScale += 0.1f;
-            //}
-            //if (Time.timeScale >= 1)
-            //{
-            //  Time.timeScale = 1;
-            //  isPaused = false;
-            //  AudioListener.pause = false;
-            //}
         }
     }
 
     void InitializeCombatStats()
     {
+        // Récupère le niveau du joueur et défini ces stats en rapport à ces stats
         switch (PlayerPrefs.GetInt("playerLevel"))
         {
             case 1:
@@ -171,29 +139,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void InitializeCombatStart()
-    {
-
-        // OSKOUR
-
-        Debug.Log("FightBegin");
-        Vector2 currentPosition = transform.position;
-        if (moveInput.x < 0)
-        {
-            transform.position = new Vector2(currentPosition.x + 3f, currentPosition.y);
-            Debug.Log("IsMoved");
-        }
-        else
-        {
-            transform.position = new Vector2(currentPosition.x - 3f, currentPosition.y);
-        }
-        isFighting = true;
-        MenuCombatUI.SetActive(true);
-        AttackButton.Select();
-    }
+   
 
     void EndCombat()
     {
+        // Attribue de l'experience au joueur ou le level up
         if (PlayerPrefs.GetInt("currentEXP") >= necessaryEXP)
         {
             PlayerPrefs.SetInt("playerLevel", (PlayerPrefs.GetInt("playerLevel") + 1));

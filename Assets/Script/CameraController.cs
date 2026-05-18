@@ -1,4 +1,3 @@
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -6,8 +5,6 @@ public class CameraController : MonoBehaviour
 {
     int sceneID;
     bool checkerGameLaunchOnce;
-
-    // Camera Hub
 
     // Camera Level
     public Transform target;

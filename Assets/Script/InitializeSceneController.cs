@@ -9,6 +9,8 @@ public class InitializeSceneController : MonoBehaviour
     public GameObject CameraHub;
     public GameObject TitleMenuUI;
 
+    public PlayerController CharaState;
+
     void Awake()
     {
         // Récupère l'ID de la scene actuellement chargé
@@ -36,7 +38,9 @@ public class InitializeSceneController : MonoBehaviour
             case 0:
                 // Si le joueur a perdu
                 if ((PlayerPrefs.GetInt("playerLose")) == 1) {
-                    Instantiate(Chara);
+                    Instantiate(Chara, new Vector2(-3.6f, -0.95f), Quaternion.Euler(0f, 0f, 0f));
+                    CharaState.isFighting = false;
+                    CharaState.isPaused = false;
                     Instantiate(CameraHub);
 
                     PlayerPrefs.SetInt("playerLose", 0);
@@ -50,17 +54,12 @@ public class InitializeSceneController : MonoBehaviour
 
             // Initialisation de la scene "level"
             case 1:
-                Instantiate(Chara);
+                Instantiate(Chara, new Vector2(-7f, -0.85f), Quaternion.Euler(0f, 0f, 0f));
                 break;
         }
 
         // Termine en sauvegardant l'ID de scene dans laquelle le joueur ce situe
         PlayerPrefs.SetInt("wherePlayer", sceneID);
         PlayerPrefs.Save();
-    }
-
-    void Update()
-    {
-        
     }
 }
