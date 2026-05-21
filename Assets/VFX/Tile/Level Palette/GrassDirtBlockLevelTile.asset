@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: GrassTile
+  m_Name: GrassDirtBlockLevelTile
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.Tilemaps.Tile
-  m_Sprite: {fileID: -3023766824798548878, guid: 678ca5bd34f25ff49ba15fc4826afa95, type: 3}
+  m_Sprite: {fileID: 8228919445517958067, guid: 2255c3776cd0ac546b77417036235a91, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
@@ -22,7 +22,7 @@ MonoBehaviour:
     e10: 0
     e11: 1
     e12: 0
-    e13: -0.6
+    e13: 0
     e20: 0
     e21: 0
     e22: 1
@@ -32,5 +32,5 @@ MonoBehaviour:
     e32: 0
     e33: 1
   m_InstancedGameObject: {fileID: 0}
-  m_Flags: 2
+  m_Flags: 1
   m_ColliderType: 1
